@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.semin.app.professor.ProfessorMapper">
+	<select id="list" resultType="ProfessorDTO">
+		SELECT PROFESSOR_NO, PROFESSOR_NAME, DEPARTMENT_NO FROM TB_PROFESSOR
+	</select>
+
+	<select id="detail" resultType="ProfessorDTO">
+		SELECT * FROM TB_PROFESSOR
+		WHERE PROFESSOR_NO = #{professorNo}
+	</select>
+
+	<insert id="create" parameterType="ProfessorDTO">
+		INSERT INTO TB_PROFESSOR
+		VALUES(#{professorNo}, #{professorName}, #{professorSsn}, #{professorAddress}, #{departmentNo})
+	</insert>
+
+	<delete id="delete" parameterType="ProfessorDTO">
+		DELETE TB_PROFESSOR
+		WHERE PROFESSOR_NO = #{professorNo}
+	</delete>
+
+	<update id="update" parameterType="ProfessorDTO">
+		UPDATE TB_PROFESSOR
+		SET PROFESSOR_NAME = #{professorName},
+			PROFESSOR_SSN = #{professorSsn},
+			PROFESSOR_ADDRESS = #{professorAddress},
+			DEPARTMENT_NO = #{departmentNo}
+		WHERE PROFESSOR_NO = #{professorNo}
+	</update>
+
+
+</mapper>
