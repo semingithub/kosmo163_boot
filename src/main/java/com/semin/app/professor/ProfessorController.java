@@ -7,8 +7,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/professor/*")
 public class ProfessorController {
 	
 	@Autowired
@@ -31,7 +33,7 @@ public class ProfessorController {
 		
 	}
 	
-	@PostMapping("crate")
+	@PostMapping("create")
 	public String create(ProfessorDTO professorDTO) throws Exception {
 		int result = professorService.create(professorDTO);
 		return "redirect:./list";
