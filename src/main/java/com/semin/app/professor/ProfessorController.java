@@ -33,7 +33,7 @@ public class ProfessorController {
 		
 	}
 	
-	@PostMapping("crate")
+	@PostMapping("create")
 	public String create(ProfessorDTO professorDTO) throws Exception {
 		int result = professorService.create(professorDTO);
 		return "redirect:./list";
