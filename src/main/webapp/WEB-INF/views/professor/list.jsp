@@ -9,7 +9,8 @@
 <body>
 	<h1>Professor List Page</h1>
 	<div>
-		<table>
+		<button type="button" onclick="location.href='./create'">추가</button>
+		<table border="1" style="text-align: center;">
 			<thead>
 				<tr>
 					<th>NO</th>
@@ -18,16 +19,28 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr>
 				<c:forEach items="${list}" var="d">
-					<td>${d.professorNo}</td>
-					<td>${d.professorName}</td>
-					<td>${d.departmentNo}</td>
-				</tr>
+					<tr>
+						<td>${d.professorNo}</td>
+						<td>${d.professorName}</td>
+						<td>${d.departmentNo}</td>
+					</tr>
 				</c:forEach>
 			</tbody>
 		</table>
-		<button type="button" onclick="location.href='./create'" >추가</button>
+		<div>
+			<li style="display: inline">
+				<a href="./list?page=${pager.pre ? pager.start-1 : pager.start}" style="text-decoration: none">◀</a>
+			</li>
+			<c:forEach begin="${pager.start}" end="${pager.end}" var="i">
+				<li style="display: inline;">
+					<a href="./list?page=${i}" style="text-decoration: none">${i}</a>
+				</li>
+			</c:forEach>
+			<li style="display: inline">
+				<a href="./list?page=${pager.next ? pager.end+1 : pager.end}" style="text-decoration: none">▶</a>
+			</li>
+		</div>
 	</div>
 </body>
 </html>

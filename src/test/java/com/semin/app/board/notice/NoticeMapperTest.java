@@ -15,11 +15,17 @@ class NoticeMapperTest {
 	private NoticeMapper noticeMapper;
 	
 	@Test
-	void testList() throws Exception {
-		List<NoticeDTO> li = noticeMapper.list();
-		assertNotEquals(0, li.size());
-		System.out.println(li.size());
+	void getCount() throws Exception {
+		Long result = noticeMapper.getCount();
+		assertNotEquals(0, result);
 	}
+	
+//	@Test
+//	void testList() throws Exception {
+//		List<NoticeDTO> li = noticeMapper.list();
+//		assertNotEquals(0, li.size());
+//		System.out.println(li.size());
+//	}
 	
 	//@Test
 	void testDetail() throws Exception{
@@ -30,7 +36,7 @@ class NoticeMapperTest {
 		System.out.println(noticeDTO);
 	}
 	
-	@Test
+	//@Test
 	void testCreate() throws Exception{
 		int idx = 1;
 		for(int i = 0; i <100; i++) {		

@@ -3,8 +3,15 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.semin.app.professor.ProfessorMapper">
-	<select id="list" resultType="ProfessorDTO">
-		SELECT PROFESSOR_NO, PROFESSOR_NAME, DEPARTMENT_NO FROM TB_PROFESSOR
+	<select id="list" resultType="ProfessorDTO" parameterType="Pager">
+		SELECT * FROM
+		(SELECT ROWNUM AS R, T.* FROM
+		(SELECT * FROM TB_PROFESSOR ORDER BY PROFESSOR_NO DESC) T)
+		WHERE R BETWEEN #{first} AND #{last}
+	</select>
+	
+	<select id="getCount" parameterType="Long">
+		SELECT COUNT(PROFESSOR_NO) FROM TB_PROFESSOR
 	</select>
 
 	<select id="detail" resultType="ProfessorDTO">
@@ -25,9 +32,9 @@
 	<update id="update" parameterType="ProfessorDTO">
 		UPDATE TB_PROFESSOR
 		SET PROFESSOR_NAME = #{professorName},
-			PROFESSOR_SSN = #{professorSsn},
-			PROFESSOR_ADDRESS = #{professorAddress},
-			DEPARTMENT_NO = #{departmentNo}
+		PROFESSOR_SSN = #{professorSsn},
+		PROFESSOR_ADDRESS = #{professorAddress},
+		DEPARTMENT_NO = #{departmentNo}
 		WHERE PROFESSOR_NO = #{professorNo}
 	</update>
 

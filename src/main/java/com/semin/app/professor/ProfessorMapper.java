@@ -1,13 +1,18 @@
 package com.semin.app.professor;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+
+import com.semin.app.page.Pager;
 
 @Mapper
 public interface ProfessorMapper {
 	
-	public List<ProfessorDTO> list() throws Exception;
+	public List<ProfessorDTO> list(Pager pager) throws Exception;
+	
+	public Long getCount() throws Exception;
 	
 	public ProfessorDTO detail(ProfessorDTO professorDTO) throws Exception;
 	
