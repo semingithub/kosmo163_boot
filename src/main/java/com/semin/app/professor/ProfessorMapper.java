@@ -12,7 +12,7 @@ public interface ProfessorMapper {
 	
 	public List<ProfessorDTO> list(Pager pager) throws Exception;
 	
-	public Long getCount() throws Exception;
+	public Long getCount(Pager pager) throws Exception;
 	
 	public ProfessorDTO detail(ProfessorDTO professorDTO) throws Exception;
 	

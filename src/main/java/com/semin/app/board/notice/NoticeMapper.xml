@@ -3,15 +3,29 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.semin.app.board.notice.NoticeMapper">
+	<!-- 반복되는 쿼리문 -->
+	<sql id="search">
+		WHERE
+		<choose>
+			<when test="kind == 'v2'">NOTICE_CONTENTS</when>
+			<when test="kind == 'v3'">PROFESSOR_NO</when>
+			<otherwise>NOTICE_TITLE</otherwise>
+		</choose>
+		LIKE '%'||#{search}||'%'
+	</sql>
+
 	<select id="list" resultType="NoticeDTO" parameterType="Pager">
-	<![CDATA[SELECT * FROM
-		(SELECT ROWNUM AS R, T.* FROM 
-		(SELECT * FROM TB_NOTICE ORDER BY NOTICE_NO DESC) T)
-		WHERE R BETWEEN #{first} AND #{last}]]>
+		SELECT * FROM
+		(SELECT ROWNUM AS R, T.* FROM
+		(SELECT * FROM TB_NOTICE
+		<include refid="search"></include>
+		ORDER BY NOTICE_NO DESC) T)
+		WHERE R BETWEEN #{first} AND #{last}
 	</select>
-	
-	<select id="getCount" resultType="Long">
+
+	<select id="getCount" resultType="Long" parameterType="Pager">
 		SELECT COUNT(NOTICE_NO) FROM TB_NOTICE
+		<include refid="search"></include>
 	</select>
 
 	<select id="detail" resultType="NoticeDTO">
@@ -35,7 +49,8 @@
 		NOTICE_CONTENTS = #{noticeContents},
 		PROFESSOR_NO = #{professorNo},
 		NOTICE_DATE = SYSDATE,
-		NOTICE_HITS = #{noticeHits}
+		NOTICE_HITS =
+		#{noticeHits}
 		WHERE NOTICE_NO = #{noticeNo}
 	</update>
 

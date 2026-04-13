@@ -16,8 +16,8 @@ public class NoticeService {
 	private NoticeMapper noticeMapper;
 
 	public List<NoticeDTO> list(Pager pager) throws Exception {
-		pager.makePageNumber(noticeMapper.getCount());
-		pager.makeRowNumber();
+		pager.makePageNumber(noticeMapper.getCount(pager));
+//		pager.makeRowNumber();
 		
 		
 		return noticeMapper.list(pager);

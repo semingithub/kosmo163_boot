@@ -8,8 +8,12 @@
 </head>
 <body>
 	<h1>Professor List Page</h1>
+	<button type="button" onclick="location.href='./create'">추가</button>
+	<form action="./list" method="get">
+		<input type="text" name="search">
+		<button type="submit">검색</button>
+	</form>
 	<div>
-		<button type="button" onclick="location.href='./create'">추가</button>
 		<table border="1" style="text-align: center;">
 			<thead>
 				<tr>
@@ -29,17 +33,11 @@
 			</tbody>
 		</table>
 		<div>
-			<li style="display: inline">
-				<a href="./list?page=${pager.pre ? pager.start-1 : pager.start}" style="text-decoration: none">◀</a>
-			</li>
+			<li style="display: inline"><a href="./list?page=${pager.pre ? pager.start-1 : pager.start}&search=${pager.search}" style="text-decoration: none">◀</a></li>
 			<c:forEach begin="${pager.start}" end="${pager.end}" var="i">
-				<li style="display: inline;">
-					<a href="./list?page=${i}" style="text-decoration: none">${i}</a>
-				</li>
+				<li style="display: inline;"><a href="./list?page=${i}&search=${pager.search}" style="text-decoration: none">${i}</a></li>
 			</c:forEach>
-			<li style="display: inline">
-				<a href="./list?page=${pager.next ? pager.end+1 : pager.end}" style="text-decoration: none">▶</a>
-			</li>
+			<li style="display: inline"><a href="./list?page=${pager.next ? pager.end+1 : pager.end}&search=${pager.search}" style="text-decoration: none">▶</a></li>
 		</div>
 	</div>
 </body>

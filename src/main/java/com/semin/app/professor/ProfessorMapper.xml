@@ -3,15 +3,23 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.semin.app.professor.ProfessorMapper">
+
+	<sql id="search">
+		WHERE PROFESSOR_NO LIKE '%'||#{search}||'%'
+	</sql>
+
 	<select id="list" resultType="ProfessorDTO" parameterType="Pager">
 		SELECT * FROM
 		(SELECT ROWNUM AS R, T.* FROM
-		(SELECT * FROM TB_PROFESSOR ORDER BY PROFESSOR_NO DESC) T)
+		(SELECT * FROM TB_PROFESSOR
+		<include refid="search"></include>
+		 ORDER BY PROFESSOR_NO DESC) T)
 		WHERE R BETWEEN #{first} AND #{last}
 	</select>
 	
-	<select id="getCount" parameterType="Long">
+	<select id="getCount" parameterType="Pager">
 		SELECT COUNT(PROFESSOR_NO) FROM TB_PROFESSOR
+		<include refid="search"></include>
 	</select>
 
 	<select id="detail" resultType="ProfessorDTO">

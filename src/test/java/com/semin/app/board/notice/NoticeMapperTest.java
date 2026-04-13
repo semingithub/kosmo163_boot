@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import com.semin.app.page.Pager;
+
 @SpringBootTest
 class NoticeMapperTest {
 
@@ -15,8 +17,8 @@ class NoticeMapperTest {
 	private NoticeMapper noticeMapper;
 	
 	@Test
-	void getCount() throws Exception {
-		Long result = noticeMapper.getCount();
+	void getCount(Pager pager) throws Exception {
+		Long result = noticeMapper.getCount(pager);
 		assertNotEquals(0, result);
 	}
 	
