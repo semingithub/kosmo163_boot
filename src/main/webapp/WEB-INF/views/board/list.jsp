@@ -16,6 +16,7 @@
 				<!-- Page Content  -->
 				<div class="container-fluid">
 					<h1 class="h3 mb-4 text-gray-800">Notice List Page</h1>
+					<button class="btn btn-primary" onclick="location.href='./create'">추가</button>
 					<div class="row justify-content-center">
 						<div class="col-6">
 							<!-- 검색 폼 -->
@@ -25,8 +26,8 @@
 										<div class="input-group-prepend">
 											<select name="kind" class="custom-select">
 												<option ${pager.kind eq 'v1'? 'selected' : '' } value="v1">Title</option>
-												<option ${pager.kind eq 'v2'? 'selected' : '' }value="v2">Contents</option>
-												<option ${pager.kind eq 'v3'? 'selected' : '' }value="v3">Writer</option>
+												<option ${pager.kind eq 'v2'? 'selected' : '' } value="v2">Contents</option>
+												<option ${pager.kind eq 'v3'? 'selected' : '' } value="v3">Writer</option>
 											</select>
 										</div>
 										<input type="text" value="${pager.search}" name="search" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
@@ -53,7 +54,9 @@
 												<h5>${l.noticeNo}</h5>
 											</td>
 											<td>
-												<h5>${l.noticeTitle}</h5>
+												<a href="./detail?noticeNo=${l.noticeNo}">
+													<h5>${l.noticeTitle}</h5>
+												</a>
 											</td>
 											<td>
 												<h5>${l.professorNo}</h5>

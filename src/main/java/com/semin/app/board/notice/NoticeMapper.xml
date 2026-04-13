@@ -28,14 +28,14 @@
 		<include refid="search"></include>
 	</select>
 
-	<select id="detail" resultType="NoticeDTO">
+	<select id="detail" resultType="NoticeDTO" parameterType="NoticeDTO">
 		SELECT * FROM TB_NOTICE
 		WHERE NOTICE_NO = #{noticeNo}
 	</select>
 
 	<insert id="create" parameterType="NoticeDTO">
 		INSERT INTO TB_NOTICE
-		VALUES(NOTICE_SEQ.NEXTVAL, #{noticeTitle}, #{noticeContents}, #{professorNo}, SYSDATE, #{noticeHits})
+		VALUES(NOTICE_SEQ.NEXTVAL, #{noticeTitle}, #{noticeContents}, #{professorNo}, SYSDATE, 0)
 	</insert>
 
 	<delete id="delete" parameterType="NoticeDTO">
