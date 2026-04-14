@@ -36,6 +36,7 @@
 								<div class="form-group">
 									<label for="attach">첨부파일</label>
 									<input type="file" name="attach" class="form-control">
+									<input type="file" name="attach" class="form-control">
 								</div>
 								<button type="submit" class="btn btn-primary">Submit</button>
 							</form>

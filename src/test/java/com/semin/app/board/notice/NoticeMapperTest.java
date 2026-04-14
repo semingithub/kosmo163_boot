@@ -3,6 +3,7 @@ package com.semin.app.board.notice;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,13 +11,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.semin.app.page.Pager;
 
+import lombok.extern.slf4j.Slf4j;
+
 @SpringBootTest
+@Slf4j
 class NoticeMapperTest {
 
 	@Autowired
 	private NoticeMapper noticeMapper;
 	
-	@Test
+	//@Test
 	void getCount(Pager pager) throws Exception {
 		Long result = noticeMapper.getCount(pager);
 		assertNotEquals(0, result);
@@ -29,13 +33,15 @@ class NoticeMapperTest {
 //		System.out.println(li.size());
 //	}
 	
-	//@Test
+	@Test
 	void testDetail() throws Exception{
 		NoticeDTO noticeDTO = new NoticeDTO();
-		noticeDTO.setNoticeNo(1L);
+		noticeDTO.setNoticeNo(166L);
+		
 		noticeDTO = noticeMapper.detail(noticeDTO);
+		
+		log.info("Map: {}", noticeDTO);
 		assertNotNull(noticeDTO);
-		System.out.println(noticeDTO);
 	}
 	
 	//@Test

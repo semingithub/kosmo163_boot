@@ -26,24 +26,24 @@ public class NoticeController {
 		model.addAttribute("list", li);
 		return "/board/list";
 	}
-	
+
 	@GetMapping("detail")
-	public String detail(NoticeDTO noticeDTO,Model model) throws Exception {
+	public String detail(NoticeDTO noticeDTO, Model model) throws Exception {
 		noticeDTO = noticeService.detail(noticeDTO);
 		model.addAttribute("detail", noticeDTO);
-		
+
 		return "/board/detail";
 	}
-	
+
 	@GetMapping("create")
 	public String create() throws Exception {
 		return "/board/create";
 	}
-	
+
 	@PostMapping("create")
-	public String create(NoticeDTO noticeDTO,@RequestParam("attach") MultipartFile attach) throws Exception {
+	public String create(NoticeDTO noticeDTO, @RequestParam("attach") MultipartFile[] attach) throws Exception {
 		int result = noticeService.create(noticeDTO, attach);
-		
+
 		return "redirect:./list";
 	}
 

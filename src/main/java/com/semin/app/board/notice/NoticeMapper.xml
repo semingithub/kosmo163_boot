@@ -3,6 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.semin.app.board.notice.NoticeMapper">
+	<!-- File -->
+	<insert id="createFile" parameterType="NoticeFileDTO">
+		INSERT INTO TB_NOTICEFILE
+		VALUES(NOTICE_SEQ.NEXTVAL, #{fileName}, #{noticeNo}, #{oriName})
+	</insert>
+	<!-- File 끝 -->
+
 	<!-- 반복되는 쿼리문 -->
 	<sql id="search">
 		WHERE
@@ -28,14 +35,44 @@
 		<include refid="search"></include>
 	</select>
 
-	<select id="detail" resultType="NoticeDTO" parameterType="NoticeDTO">
-		SELECT * FROM TB_NOTICE
+	<select id="detail" resultMap="detailResult" parameterType="NoticeDTO">
+		SELECT * FROM TB_NOTICE n
+		LEFT JOIN TB_NOTICEFILE f
+		<!-- ON n.NOTICE_NO = f.NOTICE_NO -->
+		USING(NOTICE_NO)
 		WHERE NOTICE_NO = #{noticeNo}
 	</select>
 
+	<!-- 수동 매핑 -->
+	<resultMap type="NoticeDTO" id="detailResult">
+		<!-- ID = Primary Key -->
+		<id column="NOTICE_NO" property="noticeNo"/>
+		<!-- 그외 나머지 -->
+		<result column="NOTICE_TITLE" property="noticeTitle"/>
+		<result column="NOTICE_CONTENTS" property="noticeContents"/>
+		<result column="PROFESSOR_NO" property="professorNo"/>
+		<result column="NOTICE_DATE" property="noticeDate"/>
+		<result column="NOTICE_HITS" property="noticeHits"/>
+		<!-- 1:1
+		<association property="" type="">
+			<id/>
+			<result/>
+		</association> -->
+		<!-- 1:N -->
+		<collection property="list" javaType="java.util.List" ofType="NoticeFileDTO">
+			<id column="FILE_NO" property="fileNo"/>
+			<result column="FILE_NAME" property="fileName"/>
+			<result column="ORI_NAME" property="oriName"/>
+		</collection>
+	</resultMap>
+
 	<insert id="create" parameterType="NoticeDTO">
+		<selectKey order="BEFORE" resultType="Long" keyProperty="noticeNo">
+			SELECT NOTICE_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+
 		INSERT INTO TB_NOTICE
-		VALUES(NOTICE_SEQ.NEXTVAL, #{noticeTitle}, #{noticeContents}, #{professorNo}, SYSDATE, 0)
+		VALUES(#{noticeNo}, #{noticeTitle}, #{noticeContents}, #{professorNo}, SYSDATE, 0)
 	</insert>
 
 	<delete id="delete" parameterType="NoticeDTO">

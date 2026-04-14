@@ -25,6 +25,9 @@
 							<h5>${detail.noticeTitle}</h5>
 							<h5>${detail.professorNo}</h5>
 							<div>${detail.noticeContents}</div>
+							<c:forEach items="${detail.list}" var="f">
+								<h4><img src="/files/notice/${f.fileName}"></h4>
+							</c:forEach>
 							<div>
 								<form action="./delete" method="post">
 									<input type="hidden" name="departmentNo" value="${detail.noticeNo}">

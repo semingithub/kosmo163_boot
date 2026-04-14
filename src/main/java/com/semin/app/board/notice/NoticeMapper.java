@@ -10,6 +10,8 @@ import com.semin.app.page.Pager;
 @Mapper
 public interface NoticeMapper {
 
+	public int createFile(NoticeFileDTO noticeFileDTO) throws Exception;
+	
 	public List<NoticeDTO> list(Pager pager) throws Exception;
 	
 	public Long getCount(Pager pager) throws Exception;

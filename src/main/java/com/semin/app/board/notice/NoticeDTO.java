@@ -1,6 +1,7 @@
 package com.semin.app.board.notice;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,11 +11,13 @@ import lombok.ToString;
 @Setter
 @ToString
 public class NoticeDTO {
-	
+
 	private Long noticeNo;
 	private String noticeTitle;
 	private String noticeContents;
 	private String professorNo;
 	private LocalDateTime noticeDate;
 	private Long noticeHits;
+	
+	private List<NoticeFileDTO> list;
 }
