@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.semin.app.board.qna.QnaMapper">
+	<sql id="search">
+		WHERE
+		<choose>
+			<when test="kind == 'v2'">NOTICE_CONTENTS</when>
+			<when test="kind == 'v3'">PROFESSOR_NO</when>
+			<otherwise>NOTICE_TITLE</otherwise>
+		</choose>
+		LIKE '%'||#{search}||'%'
+	</sql>
+
+	<select id="list" resultType="QnaDTO">
+		SELECT * FROM
+		(SELECT ROWNUM AS R, T.* FROM
+		(SELECT * FROM TB_QNA
+		<include refid="search"></include>
+		ORDER BY NOTICE_REF DESC, NOTICE_STEP ASC) T)
+		WHERE R BETWEEN #{first} AND #{last}
+	</select>
+
+	<select id="getCount" resultType="Long" parameterType="Pager">
+		SELECT COUNT(NOTICE_NO) FROM TB_QNA
+		<include refid="search"></include>
+	</select>
+
+	<insert id="create" parameterType="QnaDTO">
+		<selectKey order="BEFORE" resultType="Long" keyProperty="noticeNo">
+			SELECT QNA_NO_SEQ.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO TB_QNA
+		VALUES(#{noticeNo}, #{noticeTitle}, #{noticeContents}, #{professorNo}, SYSDATE, 0,
+		<choose>
+			<when test="noticeRef == 0 or noticeRef == null">#{noticeNo}</when>
+			<otherwise>#{noticeRef}</otherwise>
+		</choose>
+		,
+		#{noticeStep}, #{noticeDepth})
+	</insert>
+
+
+	<insert id="createFile" parameterType="QnaFileDTO">
+		INSERT INTO TB_QNAFILE
+		VALUES(QNA_NO_SEQ.NEXTVAL, #{fileName}, #{noticeNo}, #{oriName})
+	</insert>
+
+	<select id="detail" resultMap="detailResult" parameterType="QnaDTO">
+		SELECT * FROM TB_QNA q
+		LEFT JOIN TB_QNAFILE qf
+		USING(NOTICE_NO)
+		WHERE NOTICE_NO = #{noticeNo}
+	</select>
+
+	<!-- 수동 매핑 -->
+	<resultMap type="QnaDTO" id="detailResult">
+		<!-- ID = Primary Key -->
+		<id column="NOTICE_NO" property="noticeNo"/>
+		<!-- 그외 나머지 -->
+		<result column="NOTICE_TITLE" property="noticeTitle"/>
+		<result column="NOTICE_CONTENTS" property="noticeContents"/>
+		<result column="PROFESSOR_NO" property="professorNo"/>
+		<result column="NOTICE_DATE" property="noticeDate"/>
+		<result column="NOTICE_HITS" property="noticeHits"/>
+		<result column="NOTICE_REF" property="noticeRef"/>
+		<result column="NOTICE_STEP" property="noticeStep"/>
+		<result column="NOTICE_DEPTH" property="noticeDepth"/>
+		<!-- 1:1 <association property="" type=""> <id/> <result/> </association> -->
+		<!-- 1:N -->
+		<collection property="list" javaType="java.util.List" ofType="QnaFileDTO">
+			<id column="FILE_NO" property="fileNo"/>
+			<result column="FILE_NAME" property="fileName"/>
+			<result column="ORI_NAME" property="oriName"/>
+		</collection>
+	</resultMap>
+	
+	<update id="replyUpdate" parameterType="QnaDTO">
+		UPDATE TB_QNA
+		SET NOTICE_STEP = NOTICE_STEP + 1
+		WHERE NOTICE_REF = #{noticeRef} AND NOTICE_STEP > #{noticeStep}
+	</update>
+</mapper>
